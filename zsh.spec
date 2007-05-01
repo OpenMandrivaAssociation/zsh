@@ -64,12 +64,15 @@ perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zc
 %ifarch sparc
 EXTRA_CONFIGURE_ARGS="--disable-lfs"
 %endif
+# check for tcsetpgrp fails with "configure: error: no controlling tty" when
+# building by bot; force tcsetpgrp
 %configure2_5x \
 	--enable-etcdir=%_sysconfdir \
 	--enable-function-subdirs \
 	--disable-debug $EXTRA_CONFIGURE_FLAGS \
 	--disable-max-jobtable-size \
-	--enable-pcre
+	--enable-pcre \
+	--with-tcsetpgrp
 	#--with-curses-terminfo
 make all
 
