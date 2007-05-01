@@ -84,6 +84,9 @@ mkdir -p $RPM_BUILD_ROOT/{bin,etc}
 cp -a zcfg/etc/z* $RPM_BUILD_ROOT%_sysconfdir
 cp -a zcfg/share/zshrc_default %buildroot%_datadir/zsh/%version/zshrc_default
 
+# this prevents RPM helper from adding dependency on /usr/bin/zsh
+find %buildroot%_datadir/zsh/%version -type f -exec chmod 0644 '{}' \;
+
 # Backward compatibilie should be removed in the others times.
 pushd $RPM_BUILD_ROOT/bin && {
     mv ..%_bindir/zsh ./zsh
