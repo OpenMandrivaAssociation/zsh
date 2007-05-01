@@ -1,6 +1,3 @@
-%define doc_version 4.2.6
-%define url ftp://ftp.zsh.org/pub/
-
 
 Summary: A shell with lots of features
 Name:    zsh
@@ -8,20 +5,19 @@ Version: 4.2.6
 Release: %mkrel 5
 Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
-Source1: http://www.zsh.org/pub//%name-%doc_version-doc.tar.bz2
+Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.sunsite.dk/Guide/zshguide.tar.bz2
-Source4: zsh.urpmi_comp.bz2
-Patch1: zsh-3.1.6-dev-22-path.patch.bz2
-Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch.bz2
-Patch101: zsh-serial.patch.bz2
-Patch102: zsh-4.1.0-dev-7-rebootin.patch.bz2
+Source4: zsh.urpmi_comp
+Patch1: zsh-3.1.6-dev-22-path.patch
+Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
+Patch101: zsh-serial.patch
+Patch102: zsh-4.1.0-dev-7-rebootin.patch
 License: GPL
 Group: Shells
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
 Epoch: 1
-# Available in our contrib.
 BuildRequires: ncurses-devel libtermcap-devel >= 2.0, texinfo yodl pcre-devel
 BuildRoot: %_tmppath/%name-buildroot
 
@@ -53,13 +49,13 @@ This package include doc guid examples and manual for zsh.
 
 %prep
 %setup -q -a 2 -a 1 -n %name-%version
-mv %name-%doc_version/Doc/* Doc/
+mv %name-%{version}/Doc/* Doc/
 %patch1 -p1
 %patch2 -p1
 %patch101 -p1
 %patch102 -p1
 mv Completion/Mandrake/ Completion/Mandriva
-bzcat %{SOURCE4}  > Completion/Mandriva/Command/_urpmi
+install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
 perl -pi -e 's/Mandrake/Mandriva/' config.modules.sh Src/Zle/complete.mdd config.modules
 # remove temporary files
