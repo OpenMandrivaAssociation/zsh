@@ -7,7 +7,7 @@ Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
 Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
-Source3: http://zsh.sunsite.dk/Guide/zshguide.tar.bz2
+Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
 Patch1: zsh-3.1.6-dev-22-path.patch
 Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
@@ -103,7 +103,7 @@ cp -a Etc/* docroot/Documentation
 cp -a Doc/*html docroot/Info_html/
 
 mkdir -p docroot/Zsh_Guide
-tar xjf %SOURCE3 -C docroot/Zsh_Guide
+tar xzf %SOURCE3 -C docroot/Zsh_Guide
 ( cd docroot/Zsh_Guide/zshguide/ ; make )  
 mv docroot/Zsh_Guide/zshguide/*html docroot/Zsh_Guide/
 rm -Rf docroot/Zsh_Guide/zshguide/
