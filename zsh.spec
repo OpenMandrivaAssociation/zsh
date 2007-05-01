@@ -1,8 +1,8 @@
 
 Summary: A shell with lots of features
 Name:    zsh
-Version: 4.2.6
-Release: %mkrel 5
+Version: 4.3.4
+Release: %mkrel 1
 Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
 Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
@@ -54,10 +54,8 @@ mv %name-%{version}/Doc/* Doc/
 %patch2 -p1
 %patch101 -p1
 %patch102 -p1
-mv Completion/Mandrake/ Completion/Mandriva
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
-perl -pi -e 's/Mandrake/Mandriva/' config.modules.sh Src/Zle/complete.mdd config.modules
 # remove temporary files
 find | grep '~$' | xargs rm -f
 perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zcalc}
@@ -81,7 +79,7 @@ rm -rf $RPM_BUILD_ROOT
 make install-strip DESTDIR=%buildroot
 make install.info DESTDIR=%buildroot
 
-# copy Mandrake Configuration files.
+# copy Mandriva Configuration files.
 mkdir -p $RPM_BUILD_ROOT/{bin,etc}
 cp -a zcfg/etc/z* $RPM_BUILD_ROOT%_sysconfdir
 cp -a zcfg/share/zshrc_default %buildroot%_datadir/zsh/%version/zshrc_default
@@ -137,6 +135,7 @@ rm -rf $RPM_BUILD_ROOT
 %dir %_datadir/zsh
 %dir %_datadir/zsh/%{version}/
 %_datadir/zsh/%{version}/functions
+%_datadir/zsh/%{version}/scripts
 %_datadir/zsh/%{version}/zshrc_default
 %dir %_libdir/zsh
 %_libdir/zsh/%{version}/
