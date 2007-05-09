@@ -2,7 +2,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: 4.3.4
-Release: %mkrel 1
+Release: %mkrel 2
 Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
 Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
@@ -19,6 +19,7 @@ Requires(postun): rpm-helper
 Requires(post): rpm-helper
 Epoch: 1
 BuildRequires: ncurses-devel libtermcap-devel >= 2.0, texinfo yodl pcre-devel
+BuildRequires: rpm-helper >= 0.18.5
 BuildRoot: %_tmppath/%name-buildroot
 
 %description
@@ -124,12 +125,12 @@ mv docroot/Examples/compctl-examples docroot/StartupFiles
 rm -rf $RPM_BUILD_ROOT
 
 %post
-/usr/share/rpm-helper/add-shell %name $1 /bin/zsh
+%_post_shelladd /bin/zsh
 %_install_info %name.info
 
 %postun
-/usr/share/rpm-helper/del-shell %name $1 /bin/zsh
 %_remove_install_info %name.info
+%_preun_shelldel /bin/zsh
 
 %files
 %defattr(-,root,root,0755)
