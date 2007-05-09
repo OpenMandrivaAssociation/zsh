@@ -2,7 +2,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: 4.3.4
-Release: %mkrel 2
+Release: %mkrel 3
 Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
 Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
