@@ -2,7 +2,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: 4.3.4
-Release: %mkrel 3
+Release: %mkrel 4
 Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
 Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
@@ -13,6 +13,7 @@ Patch1: zsh-3.1.6-dev-22-path.patch
 Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
 Patch101: zsh-serial.patch
 Patch102: zsh-4.1.0-dev-7-rebootin.patch
+Patch500: zsh-4.3.4-promptsp_vs_ignoreeof.patch
 License: GPL
 Group: Shells
 Requires(postun): rpm-helper
@@ -55,6 +56,7 @@ mv %name-%{version}/Doc/* Doc/
 %patch2 -p1
 %patch101 -p1
 %patch102 -p1
+%patch500 -p0
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
 # remove temporary files
