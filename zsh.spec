@@ -21,7 +21,6 @@ Requires(post): rpm-helper
 Epoch: 1
 BuildRequires: ncurses-devel libtermcap-devel >= 2.0, texinfo yodl pcre-devel
 BuildRequires: rpm-helper >= 0.18.5
-BuildRoot: %_tmppath/%name-buildroot
 
 %description
 Zsh is a UNIX command interpreter (shell) usable as an
