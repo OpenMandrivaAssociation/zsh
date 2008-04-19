@@ -1,11 +1,11 @@
 
 Summary: A shell with lots of features
 Name:    zsh
-Version: 4.3.5
+Version: 4.3.6
 Release: %mkrel 1
 Url: http://www.zsh.org
-Source0: http://www.zsh.org/pub//%name-%{version}.tar.bz2
-Source1: http://www.zsh.org/pub//%name-%{version}-doc.tar.bz2
+Source0: http://www.zsh.org/pub/%name-%{version}.tar.bz2
+Source1: http://www.zsh.org/pub/%name-%{version}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
