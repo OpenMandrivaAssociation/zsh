@@ -1,3 +1,4 @@
+%define _disable_ld_no_undefined 1
 
 Summary: A shell with lots of features
 Name:    zsh
