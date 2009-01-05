@@ -92,7 +92,7 @@ make all
 %install
 rm -rf $RPM_BUILD_ROOT
 
-make install-strip DESTDIR=%buildroot
+make install DESTDIR=%buildroot
 make install.info DESTDIR=%buildroot
 
 # copy Mandriva Configuration files.
