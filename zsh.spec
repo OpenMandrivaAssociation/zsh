@@ -83,8 +83,7 @@ autoreconf
 %configure2_5x \
 	--enable-etcdir=%_sysconfdir \
 	--enable-function-subdirs \
-	--disable-debug $EXTRA_CONFIGURE_FLAGS \
-	--disable-max-jobtable-size \
+	$EXTRA_CONFIGURE_FLAGS \
 	--enable-pcre \
 	--with-tcsetpgrp
 	#--with-curses-terminfo
