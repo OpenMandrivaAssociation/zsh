@@ -14,6 +14,10 @@ Patch1: zsh-3.1.6-dev-22-path.patch
 Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
 Patch101: zsh-serial.patch
 Patch102: zsh-4.1.0-dev-7-rebootin.patch
+
+# Temporary patches, go away in next version (hopefully :)
+Patch500: zsh-4.3.9-format-security.patch
+
 License: BSD-like
 Group: Shells
 Requires(postun): rpm-helper
@@ -57,6 +61,7 @@ mv %name-%{version}/Doc/* Doc/
 %patch2 -p1
 %patch101 -p1
 %patch102 -p1
+%patch500 -p0 -b .format_security
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
 # remove temporary files
