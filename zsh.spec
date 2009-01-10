@@ -60,7 +60,7 @@ This package include doc guid examples and manual for zsh.
 %prep
 %setup -q -a 2 -a 1 -n %name-%version
 mv %name-%{version}/Doc/* Doc/
-%patch1 -p1
+#%patch1 -p1
 %patch2 -p1
 %patch101 -p1
 %patch102 -p1
