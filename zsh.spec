@@ -36,8 +36,6 @@ Epoch: 1
 BuildRequires: ncurses-devel libtermcap-devel >= 2.0, texinfo yodl pcre-devel
 BuildRequires: rpm-helper >= 0.18.5
 BuildRequires: gdbm-devel
-# Below is temporary until patch500 is integrated
-BuildRequires: autoconf
 
 BuildRoot: %_tmppath/%name-buildroot
 
@@ -85,8 +83,6 @@ perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zc
 %ifarch sparc
 EXTRA_CONFIGURE_ARGS="--disable-lfs"
 %endif
-# Below is temporary until we get build with patch500 integrated
-autoreconf
 
 # check for tcsetpgrp fails with "configure: error: no controlling tty" when
 # building by bot; force tcsetpgrp
