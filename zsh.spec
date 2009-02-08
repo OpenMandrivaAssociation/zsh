@@ -1,12 +1,22 @@
 %define _disable_ld_no_undefined 1
 
+%define dev 1
+#define pre 0
+%define zshversion 4.3.9
+
+%if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
+%{error:Both %%pre and %%dev defined}
+%endif
+
+%define srcversion %{zshversion}%{?pre:-pre-%{pre}}%{!?pre:%{?dev:-dev-%dev}}
+
 Summary: A shell with lots of features
 Name:    zsh
-Version: 4.3.9
+Version: %zshversion
 Release: %mkrel 3
 Url: http://www.zsh.org
-Source0: http://www.zsh.org/pub/%name-%{version}.tar.bz2
-Source1: http://www.zsh.org/pub/%name-%{version}-doc.tar.bz2
+Source0: http://www.zsh.org/pub/%name-%{srcversion}.tar.bz2
+Source1: http://www.zsh.org/pub/%name-%{srcversion}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
@@ -58,13 +68,13 @@ lots of other features
 This package include doc guid examples and manual for zsh.
 
 %prep
-%setup -q -a 2 -a 1 -n %name-%version
-mv %name-%{version}/Doc/* Doc/
+%setup -q -a 2 -a 1 -n %name-%srcversion
+mv %name-%{srcversion}/Doc/* Doc/
 #%patch1 -p1
 #%patch2 -p1
 %patch101 -p1
-%patch102 -p1
-%patch500 -p0 -b .format_security
+#%patch102 -p1
+#%patch500 -p0 -b .format_security
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
 # remove temporary files
@@ -98,17 +108,17 @@ make install.info DESTDIR=%buildroot
 # copy Mandriva Configuration files.
 mkdir -p $RPM_BUILD_ROOT/{bin,etc}
 cp -a zcfg/etc/z* $RPM_BUILD_ROOT%_sysconfdir
-cp -a zcfg/share/zshrc_default %buildroot%_datadir/zsh/%version/zshrc_default
+cp -a zcfg/share/zshrc_default %buildroot%_datadir/zsh/%srcversion/zshrc_default
 
 # this prevents RPM helper from adding dependency on /usr/bin/zsh
-find %buildroot%_datadir/zsh/%version -type f -exec chmod 0644 '{}' \;
+find %buildroot%_datadir/zsh/%srcversion -type f -exec chmod 0644 '{}' \;
 
 # Backward compatibilie should be removed in the others times.
 pushd $RPM_BUILD_ROOT/bin && {
     mv ..%_bindir/zsh ./zsh
 } && popd
 
-rm -f $RPM_BUILD_ROOT%_bindir/zsh-%version
+rm -f $RPM_BUILD_ROOT%_bindir/zsh-%srcversion
 
 # Copy documentation.
 rm -rf docroot
@@ -152,12 +162,12 @@ rm -rf $RPM_BUILD_ROOT
 %_mandir/man1/*.1*
 %_infodir/*.info*
 %dir %_datadir/zsh
-%dir %_datadir/zsh/%{version}/
-%_datadir/zsh/%{version}/functions
-%_datadir/zsh/%{version}/scripts
-%_datadir/zsh/%{version}/zshrc_default
+%dir %_datadir/zsh/%{srcversion}/
+%_datadir/zsh/%{srcversion}/functions
+%_datadir/zsh/%{srcversion}/scripts
+%_datadir/zsh/%{srcversion}/zshrc_default
 %dir %_libdir/zsh
-%_libdir/zsh/%{version}/
+%_libdir/zsh/%{srcversion}/
 %_datadir/zsh/site-functions/
 
 %files doc
