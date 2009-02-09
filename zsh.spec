@@ -140,7 +140,7 @@ rm -rf $RPM_BUILD_ROOT
 %_post_shelladd /bin/zsh
 %_install_info %name.info
 
-%postun
+%preun
 %_remove_install_info %name.info
 %_preun_shelldel /bin/zsh
 
