@@ -20,13 +20,13 @@ Source1: http://www.zsh.org/pub/%name-%{srcversion}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
-Patch1: zsh-3.1.6-dev-22-path.patch
-Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
+#Patch1: zsh-3.1.6-dev-22-path.patch
+#Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
 Patch101: zsh-serial.patch
-Patch102: zsh-4.1.0-dev-7-rebootin.patch
+#Patch102: zsh-4.1.0-dev-7-rebootin.patch
 
 # Temporary patches, go away in next version (hopefully :)
-Patch500: zsh-4.3.9-format-security.patch
+#Patch500: zsh-4.3.9-format-security.patch
 
 License: BSD-like
 Group: Shells
@@ -68,11 +68,7 @@ This package include doc guid examples and manual for zsh.
 %prep
 %setup -q -a 2 -a 1 -n %name-%srcversion
 mv %name-%{srcversion}/Doc/* Doc/
-#%patch1 -p1
-#%patch2 -p1
 %patch101 -p1
-#%patch102 -p1
-#%patch500 -p0 -b .format_security
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
 # remove temporary files
@@ -80,19 +76,17 @@ find | grep '~$' | xargs rm -f
 perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zcalc}
 
 %build
-%ifarch sparc
-EXTRA_CONFIGURE_ARGS="--disable-lfs"
-%endif
 
 # check for tcsetpgrp fails with "configure: error: no controlling tty" when
 # building by bot; force tcsetpgrp
 %configure2_5x \
 	--enable-etcdir=%_sysconfdir \
 	--enable-function-subdirs \
-	$EXTRA_CONFIGURE_FLAGS \
+%ifarch sparc
+	--disable-lfs \
+%endif
 	--enable-pcre \
 	--with-tcsetpgrp
-	#--with-curses-terminfo
 make all
 
 %install
