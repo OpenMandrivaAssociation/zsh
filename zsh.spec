@@ -36,6 +36,7 @@ Epoch: 1
 BuildRequires: ncurses-devel libtermcap-devel >= 2.0, texinfo yodl pcre-devel
 BuildRequires: rpm-helper >= 0.18.5
 BuildRequires: gdbm-devel
+BuildRequires: groff
 
 BuildRoot: %_tmppath/%name-buildroot
 
@@ -107,6 +108,14 @@ find %buildroot%_datadir/zsh/%srcversion -type f -exec chmod 0644 '{}' \;
 pushd $RPM_BUILD_ROOT/bin && {
     mv ..%_bindir/zsh ./zsh
 } && popd
+
+# zshall.1 includes all other man pages which does not work with compressed
+# files. Generate full contents here
+pushd $RPM_BUILD_ROOT%_mandir && {
+	/usr/bin/soelim man1/zshall.1 > zshall-full
+	mv zshall-full man1/zshall.1
+	popd
+}
 
 rm -f $RPM_BUILD_ROOT%_bindir/zsh-%srcversion
 
