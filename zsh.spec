@@ -13,7 +13,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion
-Release: %mkrel 4
+Release: %mkrel 5
 Url: http://www.zsh.org
 Source0: http://www.zsh.org/pub/%name-%{srcversion}.tar.bz2
 Source1: http://www.zsh.org/pub/%name-%{srcversion}-doc.tar.bz2
