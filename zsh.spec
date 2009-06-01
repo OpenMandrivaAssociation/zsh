@@ -1,8 +1,8 @@
 %define _disable_ld_no_undefined 1
 
-%define dev 1
+#define dev 0
 #define pre 0
-%define zshversion 4.3.9
+%define zshversion 4.3.10
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -13,7 +13,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion
-Release: %mkrel 5
+Release: %mkrel 1
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
