@@ -15,21 +15,14 @@ Name:    zsh
 Version: %zshversion
 Release: %mkrel 5
 Url: http://www.zsh.org
+License: BSD-like
+Group: Shells
 Source0: http://www.zsh.org/pub/%name-%{srcversion}.tar.bz2
 Source1: http://www.zsh.org/pub/%name-%{srcversion}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
-#Patch1: zsh-3.1.6-dev-22-path.patch
-#Patch2: zsh-4.0.1-pre-3-rpmnewopt.patch
-#Patch101: zsh-serial.patch
-#Patch102: zsh-4.1.0-dev-7-rebootin.patch
 
-# Temporary patches, go away in next version (hopefully :)
-#Patch500: zsh-4.3.9-format-security.patch
-
-License: BSD-like
-Group: Shells
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
 Epoch: 1
