@@ -13,7 +13,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion
-Release: %mkrel 1
+Release: %mkrel 2
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
@@ -22,6 +22,10 @@ Source1: http://www.zsh.org/pub/%name-%{srcversion}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
+
+# Upstream patches
+# patch100: support lzma suffix in man pages
+Patch100: zsh-4.3.10-man_lzma.patch
 
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
@@ -61,6 +65,8 @@ This package include doc guid examples and manual for zsh.
 
 %prep
 %setup -q -a 2 -a 1 -n %name-%srcversion
+%patch100 -p0 -b .man_lzma
+
 mv %name-%{srcversion}/Doc/* Doc/
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 
