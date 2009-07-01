@@ -26,6 +26,8 @@ Source4: zsh.urpmi_comp
 # Upstream patches
 # patch100: support lzma suffix in man pages
 Patch100: zsh-4.3.10-man_lzma.patch
+# (bor) fix accepting completion in log menu selection ist (27080)
+Patch101: zsh-4.3.10-fix_accept_menu_selection.patch
 
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
@@ -66,6 +68,7 @@ This package include doc guid examples and manual for zsh.
 %prep
 %setup -q -a 2 -a 1 -n %name-%srcversion
 %patch100 -p0 -b .man_lzma
+%patch101 -p0 -b .accept_menu_selection
 
 mv %name-%{srcversion}/Doc/* Doc/
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
