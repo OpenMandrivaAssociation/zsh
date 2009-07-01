@@ -13,7 +13,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion
-Release: %mkrel 2
+Release: %mkrel 3
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
@@ -28,6 +28,8 @@ Source4: zsh.urpmi_comp
 Patch100: zsh-4.3.10-man_lzma.patch
 # (bor) fix accepting completion in log menu selection ist (27080)
 Patch101: zsh-4.3.10-fix_accept_menu_selection.patch
+# (bor) allow exit completion listing with accept-search (27085)
+Patch102: zsh-4.3.10-allow_exit_complition_list.patch
 
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
@@ -69,6 +71,7 @@ This package include doc guid examples and manual for zsh.
 %setup -q -a 2 -a 1 -n %name-%srcversion
 %patch100 -p0 -b .man_lzma
 %patch101 -p0 -b .accept_menu_selection
+%patch102 -p0 -b .accept-search_complist
 
 mv %name-%{srcversion}/Doc/* Doc/
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
