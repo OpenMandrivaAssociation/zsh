@@ -13,7 +13,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion
-Release: %mkrel 3
+Release: %mkrel 4
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
