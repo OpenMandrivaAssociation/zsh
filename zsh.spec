@@ -1,6 +1,7 @@
 %define _disable_ld_no_undefined 1
 
-#define dev 0
+# The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
+%define dev 2
 #define pre 0
 %define zshversion 4.3.10
 
@@ -8,28 +9,26 @@
 %{error:Both %%pre and %%dev defined}
 %endif
 
-%define srcversion %{zshversion}%{?pre:-pre-%{pre}}%{!?pre:%{?dev:-dev-%dev}}
+%if %{?dev:1}%{!?dev:0} || %{?pre:1}%{!?pre:0}
+%define devdir development/
+%endif
+
+%define srcversion %{zshversion}%{?pre:-pre-%{pre}}%{?dev:-dev-%{dev}}
 
 Summary: A shell with lots of features
 Name:    zsh
-Version: %zshversion
-Release: %mkrel 4
+Version: %zshversion%{?dev:.dev%{dev}}
+Release: %mkrel %{?pre:0.pre%{pre}.}1
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
-Source0: http://www.zsh.org/pub/%name-%{srcversion}.tar.bz2
-Source1: http://www.zsh.org/pub/%name-%{srcversion}-doc.tar.bz2
+Source0: http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}.tar.bz2
+Source1: http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
 
-# Upstream patches
-# patch100: support lzma suffix in man pages
-Patch100: zsh-4.3.10-man_lzma.patch
-# (bor) fix accepting completion in log menu selection ist (27080)
-Patch101: zsh-4.3.10-fix_accept_menu_selection.patch
-# (bor) allow exit completion listing with accept-search (27085)
-Patch102: zsh-4.3.10-allow_exit_complition_list.patch
+# Upstream patches (none at the moment)
 
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
@@ -69,9 +68,6 @@ This package include doc guid examples and manual for zsh.
 
 %prep
 %setup -q -a 2 -a 1 -n %name-%srcversion
-%patch100 -p0 -b .man_lzma
-%patch101 -p0 -b .accept_menu_selection
-%patch102 -p0 -b .accept-search_complist
 
 mv %name-%{srcversion}/Doc/* Doc/
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
