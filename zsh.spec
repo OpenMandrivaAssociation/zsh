@@ -91,33 +91,33 @@ perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zc
 make all
 
 %install
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 make install DESTDIR=%buildroot
 make install.info DESTDIR=%buildroot
 
 # copy Mandriva Configuration files.
-mkdir -p $RPM_BUILD_ROOT/{bin,etc}
-cp -a zcfg/etc/z* $RPM_BUILD_ROOT%_sysconfdir
+mkdir -p %{buildroot}/{bin,etc}
+cp -a zcfg/etc/z* %{buildroot}%_sysconfdir
 cp -a zcfg/share/zshrc_default %buildroot%_datadir/zsh/%srcversion/zshrc_default
 
 # this prevents RPM helper from adding dependency on /usr/bin/zsh
 find %buildroot%_datadir/zsh/%srcversion -type f -exec chmod 0644 '{}' \;
 
 # Backward compatibilie should be removed in the others times.
-pushd $RPM_BUILD_ROOT/bin && {
+pushd %{buildroot}/bin && {
     mv ..%_bindir/zsh ./zsh
 } && popd
 
 # zshall.1 includes all other man pages which does not work with compressed
 # files. Generate full contents here
-pushd $RPM_BUILD_ROOT%_mandir && {
+pushd %{buildroot}%_mandir && {
 	/usr/bin/soelim man1/zshall.1 > zshall-full
 	mv zshall-full man1/zshall.1
 	popd
 }
 
-rm -f $RPM_BUILD_ROOT%_bindir/zsh-%srcversion
+rm -f %{buildroot}%_bindir/zsh-%srcversion
 
 # Copy documentation.
 rm -rf docroot
@@ -143,7 +143,7 @@ find docroot/ -type f|xargs perl -pi -e 's@^#!%_prefix/local/bin/(perl|zsh)@#!%_
 mv docroot/Examples/compctl-examples docroot/StartupFiles
 
 %clean
-rm -rf $RPM_BUILD_ROOT
+rm -rf %{buildroot}
 
 %post
 %_post_shelladd /bin/zsh
