@@ -3,7 +3,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 4.3.11
+%define zshversion 4.3.15
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -18,7 +18,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion%{?dev:.dev%{dev}}
-Release: %mkrel %{?pre:0.pre%{pre}.}2
+Release: %mkrel %{?pre:0.pre%{pre}.}1
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
@@ -33,7 +33,7 @@ Source4: zsh.urpmi_comp
 Requires(postun): rpm-helper
 Requires(post): rpm-helper
 Epoch: 1
-BuildRequires: ncurses-devel libtermcap-devel >= 2.0, texinfo yodl pcre-devel
+BuildRequires: ncurses-devel termcap-devel >= 2.0, texinfo yodl pcre-devel
 BuildRequires: rpm-helper >= 0.18.5
 BuildRequires: gdbm-devel
 BuildRequires: groff
