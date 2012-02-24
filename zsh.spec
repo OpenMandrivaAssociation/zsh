@@ -3,7 +3,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 4.3.15
+%define zshversion 4.3.17
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -37,8 +37,6 @@ BuildRequires: ncurses-devel termcap-devel >= 2.0, texinfo yodl pcre-devel
 BuildRequires: rpm-helper >= 0.18.5
 BuildRequires: gdbm-devel
 BuildRequires: groff
-
-BuildRoot: %_tmppath/%name-buildroot
 
 %description
 Zsh is a UNIX command interpreter (shell) usable as an
@@ -91,8 +89,6 @@ perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zc
 make all
 
 %install
-rm -rf %{buildroot}
-
 make install DESTDIR=%buildroot
 make install.info DESTDIR=%buildroot
 
@@ -142,9 +138,6 @@ find docroot/ -name 'Makefile*' -o -name '.yo'|xargs rm -f
 find docroot/ -type f|xargs perl -pi -e 's@^#!%_prefix/local/bin/(perl|zsh)@#!%_bindir/\1@'
 mv docroot/Examples/compctl-examples docroot/StartupFiles
 
-%clean
-rm -rf %{buildroot}
-
 %post
 %_post_shelladd /bin/zsh
 %_install_info %name.info
@@ -170,6 +163,5 @@ rm -rf %{buildroot}
 %_datadir/zsh/site-functions/
 
 %files doc
-%defattr(-,root,root)
 %doc docroot/Documentation/ docroot/Examples/ docroot/Info_html/
 %doc docroot/StartupFiles/ docroot/Zsh_Guide ChangeLog* LICENCE
