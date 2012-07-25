@@ -3,7 +3,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 4.3.17
+%define zshversion 5.0.0
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -18,7 +18,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion%{?dev:.dev%{dev}}
-Release: %mkrel %{?pre:0.pre%{pre}.}3
+Release: %mkrel %{?pre:0.pre%{pre}.}1
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
@@ -27,6 +27,7 @@ Source1: http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.bz2
 Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
+Source5: zsh.rpmlintrc
 
 # Upstream patches (none at the moment)
 
@@ -121,7 +122,7 @@ mkdir -p docroot/{Info_html,Examples,Documentation}/
 
 cp -a README docroot/
 cp -a Functions/Misc/* Misc/* Util/* docroot/Examples/
-cp -a INSTALL ChangeLog* docroot/Documentation 
+cp -a ChangeLog* docroot/Documentation 
 cp -a StartupFiles docroot/
 cp -a Etc/* docroot/Documentation
 cp -a Doc/*html docroot/Info_html/
@@ -140,10 +141,14 @@ mv docroot/Examples/compctl-examples docroot/StartupFiles
 
 %post
 %_post_shelladd /bin/zsh
+%if %{mdvver} < 201100
 %_install_info %name.info
+%endif
 
 %preun
+%if %{mdvver} <= 201100
 %_remove_install_info %name.info
+%endif
 %_preun_shelldel /bin/zsh
 
 %files
