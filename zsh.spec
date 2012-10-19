@@ -18,7 +18,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion%{?dev:.dev%{dev}}
-Release: %mkrel %{?pre:0.pre%{pre}.}1
+Release: %{?pre:0.pre%{pre}.}2
 Url: http://www.zsh.org
 License: BSD-like
 Group: Shells
