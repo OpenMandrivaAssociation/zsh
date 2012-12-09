@@ -1,0 +1,313 @@
+#compdef urpme urpmi urpmi.addmedia urpmi.removemedia urpmi.update urpmq urpmf urpmi_rpm-find-leaves
+
+_urpmi_cache_policy() {
+  local -a synthesis
+  local i
+  synthesis=(/var/lib/urpmi/synthesis.*cz)
+  for i in $synthesis; do
+    [[ -e "$1" && -e "$i" && "$1" -nt "$i" ]] && return 1
+  done
+  return 0
+}
+    
+_urpmi_media() {
+ #local source media brace expl
+ #local -a all_sources
+ #  [[ -f /etc/urpmi/urpmi.cfg ]] || return 1
+ # while read source media brace; do
+ #   [[ "$brace" != "{" ]] && continue
+ #   all_sources=("$all_sources[@]" $source)
+ # done < /etc/urpmi/urpmi.cfg
+ #_values -s , 'urpmi media' "$all_sources[@]"
+ 
+ # better use the binary, in case of change in the config 
+  local -a _all_sources
+  _all_sources=( $(_call_program packages urpmq --list-media 2>/dev/null) )
+  compadd "$@" -a -- _all_sources 
+}
+
+_urpmi_rpms() {
+  local pkg ret=1 expl
+
+  _tags rpms files
+
+  while _tags; do
+    if _requested rpms expl 'urpmi RPM'; then
+      local -a synthesis pkgs
+      synthesis=(/var/lib/urpmi/synthesis.*cz(N))
+      if [[ $#synthesis -gt 0 ]]; then
+	if _cache_invalid _urpmi_rpms || ! _retrieve_cache _urpmi_rpms; then
+	  pkgs=($(zcat $synthesis | \
+	    grep @info@ | cut -d @ -f 3 | sed -e 's/\.[^.]*$//'))
+	  _store_cache _urpmi_rpms pkgs
+	fi
+	compadd "$expl[@]" -a pkgs && ret=0
+      fi
+    fi
+
+    _requested files expl '(S)RPM file' \
+      _files -g '*.(#i)rpm(-.)' && ret=0
+  
+    (( ret )) || break
+  done
+
+  return ret
+}
+
+_urpmi_media_url() {
+  local expl ret=1
+
+  if compset -P file:// || compset -P removable://; then
+    _files "$@" -W / -/ && ret=0
+  elif [[ -prefix '(ftp|http)://' ]]; then
+    _urls "$@" && ret=0
+  else
+    _wanted mediatype expl 'type of media' \
+      compadd "$@" -- ssh:// rsync:// file:// http:// ftp:// removable:// && ret=0
+  fi
+
+  return $ret
+}
+
+_urpme_package() {
+  local -a _rpms
+  _rpms=( $(_call_program packages rpm -qa 2>/dev/null) )
+  compadd "$@" -a -- _rpms
+}
+
+_urpmi() {
+  local state context line ret=1
+  typeset -A opt_args
+
+  case "$service" in
+    urpme )
+      _arguments -A '-*' \
+	"(: -)--help[print usage information]" \
+	"(--help)--auto[do not ask any question]" \
+	"(--help)-a[find all matches]" \
+	"(--help)--use-distrib[Coin]" \
+	"(--help)--force[force the removal, even if some packages do not exist]" \
+	"(--help)--parallel[use urpmi on another node]" \
+	"(--help)--root[use a different root to remove package]: :_directories" \
+	"(--help)--test[test mode]" \
+	"(--help)-v[verbose mode]" \
+	"(--help): :_urpme_package" \
+	  && ret=0
+    ;;
+    urpmi.addmedia )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help -h --wget)--curl[use curl to retrieve distant files]" \
+	"(--help -h --curl)--wget[use wget to retrieve distant files]" \
+	"(--help -h)--limit-rate[try to limit the download rate]" \
+	"(--help -h)--proxy[use the specified HTTP proxy]" \
+	"(--help -h)--proxy-user[use the provided credentials on the proxy]" \
+	"(--help -h :)--distrib[automatically create all media from an installation medium]:media URL:_urpmi_media_url" \
+	"(--help -h)--update[mark as update media]" \
+	"(--help -h)-c[clean headers cache directory]" \
+	"(--help -h)-f[force generation of hdlist files]" \
+	"(--help -h)--probe-synthesis[try to find and use synthesis file]" \
+	"(--help -h)--probe-hdlists[try to find and use hdlist file]" \
+	"(--help -h)--no-probe[do not try to use a hdlist file]" \
+	"(--help -h)--env[use specified environment ( for bug report )]" \
+	"(--help -h)--version[use specified distribution version]" \
+	"(--help -h)--arch[use specified architecture]" \
+	"(--help -h)--virtual[ create virtual media wich are always up-to-date ( requires files:// )]" \
+	"(--help -h)--no-md5sum[disable MD5SUM file checking]" \
+	"(--help -h)--norebuild[do not try to rebuild hdlist if not readable]" \
+	"(--help -h -q -v)-v[verbose mode]" \
+	"(--help -h -v -q)-q[quiet mode]" \
+	"(--distrib):name of media: " \
+	"(--distrib):media URL:_urpmi_media_url" \
+	"(--distrib): :(with)" \
+	"(--distrib):relative path to hdlist file" \
+       && ret=0
+    ;;
+    urpmi.removemedia )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help :)-a[select all media]" \
+	"(--help -q -v)-q[be quiet]" \
+	"(--help -q -v)-v[verbose mode]" \
+	"(--help)-y[fuzzy match on media names]" \
+	"(--help)-c[clean /var/cache/urpmi/headers on exit]" \
+	"(--help -a)"{,\*}": :_urpmi_media" \
+       && ret=0
+    ;;
+    urpmi.update )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help -h)--limit-rate[try to limit the download rate]" \
+	"(--help -h)--proxy[use the specified HTTP proxy]" \
+	"(--help -h)--proxy-user[use the provided credentials on the proxy]" \
+	"(--help -h)--update[only use update media]" \
+	"(--help -h)--no-md5sum[do not check the md5sum of the files]" \
+	"(--help -h)--force-key[force the update of gpg keys]" \
+	"(--help -h --wget)--curl[use curl to retrieve distant files]" \
+	"(--help -h --curl)--wget[use wget to retrieve distant files]" \
+	"(--help -h :)-a[select all non-removable media]" \
+	"(--help -h)-c[clean /var/cache/urpmi/headers on exit]" \
+	"(--help -h)-d[force complete computation of depslist.ordered file]" \
+	"(--help -h)*-f[force generation of hdlist files]" \
+	"(--help -h -a)"{,\*}": :_urpmi_media" \
+       && ret=0
+    ;;
+    urpmi )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help -h)--update[use only update media]" \
+    "(--help -h)--auto-update[run urpmi.update -a before doing a  --auto-select]" \
+	"(--help -h)--excludemedia[do not use the media listed by comma]: :_urpmi_media" \
+	"(--help -h)--media[use only the media listed by comma]: :_urpmi_media" \
+	"(--help -h)--searchmedia[use only the given media to search for requested package]: :_urpmi_media" \
+	"(--help -h)--excludemedia[do not use the given media]:  :_urpmi_media" \
+	"(--help -h)--sortmedia[sort the media according to order given]: :_urpmi_media" \
+	"(--help -h --media --excludemedia --sortmedia --update)--synthesis[use the synthesis given instead of urpmi db]" \
+	"(--help -h)--allow-medium-change[allow change of removable media]" \
+	"(--help -h)--auto[do not ask any questions]" \
+	"(--help -h)--auto-select[select the packages to update]" \
+	"(--help -h)--no-uninstall[never uninstall a package if required by install]" \
+	"(--help -h)--keep[prefer to keep package instead of removing them to install another one]: :_urpme_package" \
+	"(--help -h)--split-level[split in small transaction if more than given packages are going to be installed]" \
+	"(--help -h)--split-length[small transaction length]" \
+	"(--help -h --fuzzy -z)"{--fuzzy,-y}"[return all matches even if exact match exists]" \
+	"(--help -h --src -s)"{--src,-s}"[next package is source package]" \
+	"(--help -h)--install-src[install only source package]" \
+	"(--help -h)--clean[clean RPM cache before doing anything]" \
+	"(--help -h)--noclean[keep rpm in cache]" \
+	"(--help -h)--force[proceed even when some packages do not exist]" \
+	"(--help -h)--allow-nodeps[allow asking user to install packages without dependencies checking]" \
+	"(--help -h)--allow-force[allow asking user to install packages without dependencies and integrity checking]" \
+	"(--help -h)--parallel[use urpmi on another node]" \
+	"(--help -h)--root[use a different root to search the leaves]: :_directories" \
+	"(--help -h)--use-distrib[configure urpmi on the fly from a distrib tree]" \
+	"(--help --wget)--curl[use curl to retrieve distant files]" \
+	"(--help --curl)--wget[use wget to retrieve distant files]" \
+	"(--help -h)--limit-rate[try to limit the download rate]" \
+	"(--help -h --no-resume)--resume[resume transfer of partially-downloaded files]" \
+	"(--help -h --resume)--no-resume[do not resume transfer of partially-downloaded files]" \
+	"(--help -h)--proxy[use the specified HTTP proxy]" \
+	"(--help -h)--proxy-user[use the provided credentials on the proxy]" \
+	"(--help -h)--bug[use the environement produced by --bug ]: :_directories" \
+	"(--help -h)--env[use specified environment ( for bug report )]" \
+	"(--help -h --verify-rpm)--no-verify-rpm[do not verify rpm signature before installation]" \
+	"(--help -h --no-verify-rpm)--verify-rpm[verify rpm signature before installation]" \
+	"(--help -h)--test[test mode]" \
+	"(--help -h)--excludepath[exclude path separated by comma]" \
+	"(--help -h)--excludedocs[exclude docs files]" \
+	"(--help -h)--skip[packages which installation should be skipped]: :_urpmi_rpms" \
+	"(--help -h)--more-choices[propose more choices]" \
+	"(--help -h)--norebuild[do not try to rebuild hdlist if not readable]" \
+	"(--help -h)--strict-arch[upgrade only packages with the same architecture]" \
+	"(--help -h)-a[select all packages matching command line]" \
+	"(--help -h -P -p)-P[do not search in provides]" \
+	"(--help -h -P -p)-p[search in provides]" \
+	"(--help -h -q -v)-q[be quiet]" \
+	"(--help -h -q -v)-v[verbose mode]" \
+	"(--help -h)"{,\*}": :_urpmi_rpms" \
+      && ret=0
+    ;;
+    urpmq )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help -h)--update[use only update media]" \
+	"(--help -h)--excludemedia[do not use the media listed by comma]: :_urpmi_media" \
+	"(--help -h)--media[use only the media listed by comma]: :_urpmi_media" \
+	"(--help -h)--searchmedia[use only the given media to search for requested package]: :_urpmi_media" \
+	"(--help -h)--excludemedia[do not use the given media]:  :_urpmi_media" \
+	"(--help -h)--sortmedia[sort the media according to order given]: :_urpmi_media" \
+	"(--help -h --media --excludemedia --sortmedia --update)--synthesis[use the synthesis given instead of urpmi db]" \
+	"(--help -h)--auto-select[automatically select packages for upgrading the system]" \
+	"(--help -h --fuzzy -z)"{--fuzzy,-y}"[return all matches even if exact match exists]" \
+	"(--help -h)--keep[prefer to keep package instead of removing them to install another one]: :_urpme_package" \
+	"(--help -h)--list[list available packages]" \
+	"(--help -h)--list-media[list available media]" \
+	"(--help -h)--list-url[list available media and their url]" \
+	"(--help -h)--list-nodes[list available nodes when using --parallel]" \
+	"(--help -h)--list-aliases[list available parallel aliases]" \
+	"(--help -h)--dump-config[dump the config in form of urpmi.addmedia argument]" \
+	"(--help -h --src -s)"{--src,-s}"[next package is source package]" \
+	"(--help -h)--headers[extract headers for package listed from urpmi db to stdout]" \
+	"(--help -h)--sources[show full path to package file]" \
+	"(--help -h)--force[ignore non-existent packages]" \
+	"(--help -h)--parallel[use urpmi on another node]" \
+	"(--help -h)--use-distrib[configure urpmi on the fly from a distrib tree]" \
+	"(--help --wget)--curl[use curl to retrieve distant files]" \
+	"(--help --curl)--wget[use wget to retrieve distant files]" \
+	"(--help -h)--proxy[use the specified HTTP proxy]" \
+	"(--help -h)--proxy-user[use the provided credentials on the proxy]" \
+	"(--help -h)--env[use specified environment ( for bug report )]" \
+	"(--help -h)--changelog[print changelog]" \
+	"(--help -h)-a[select all matches on command line]" \
+	"(--help -h -c -p -P)-c[choose complete method for resolving requires closure]" \
+	"(--help -h)-d[show package dependencies]" \
+	"(--help -h)-f[print version, release and arch with name]" \
+	"(--help -h)-g[print groups too with name]" \
+	"(--help -h)-i[print useful information in human readable form]" \
+	"(--help -h)-l[list files in package]" \
+	"(--help -h -c -p -P)-p[allow search in provides to find package]" \
+	"(--help -h -c -p -P)-P[do not search in provides to find package]" \
+	"(--help -h)-r[print version and release too with name]" \
+	"(--help -h)-R[reverse search to what requires package]" \
+	"(--help -h)-u[remove package if a better version is already installed]" \
+	"(--help -h)-v[verbose mode]" \
+	"(--help -h)-Y[like -y, but in case insensitive fashion]" \
+	"(--help -h)*:urpmi package name" \
+     && ret=0
+    ;;
+	urpmi_rpm-find-leaves )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help -h)--root[use a different root to search the leaves]: :_directories" \
+	"(--help -h)-g[only search the package of the specified group]" \
+	"(--help -h)*:urpmi package name" \
+     && ret=0
+    ;;
+    urpmf )
+      _arguments -A '-*' \
+	"(: -)"{--help,-h}"[print usage information]" \
+	"(--help -h)--excludemedia[do not use the media listed by comma]: :_urpmi_media" \
+	"(--help -h)--sortmedia[sort the media according to order given]: :_urpmi_media" \
+	"(--help --media --excludemedia --sortmedia --update)--synthesis[use the synthesis given instead of urpmi db]" \
+	"(--help -h)--media[use only the media listed by comma]: :_urpmi_media" \
+	"(--help -h -v --verbose -q --quiet)"{-q,--quiet}"[do not print tag name]" \
+	"(--help -h -v --verbose -q --quiet)"{-v,--verbose}"[verbose mode]" \
+	"(--help -h)--uniq[ ]" \
+	"(--help -h)--all[print all tags]" \
+	"(--help -h)--name[ ]" \
+	"(--help -h)--group[print tag Group]" \
+	"(--help -h)--size[print tag Size]" \
+	"(--help -h)--epoch[print tag Epoch ]" \
+	"(--help -h)--summary[print tag Summary ]" \
+	"(--help -h)--description[print tag Description]" \
+	"(--help -h)--sourcerpm[print tag Source Rpm]" \
+	"(--help -h)--packager[print tag Packager]" \
+	"(--help -h)--buildhost[print tag Buildhost]" \
+	"(--help -h)--url[print tag Url]" \
+	"(--help -h)--provides[print tag Provides]" \
+	"(--help -h)--requires[print tag Requires]" \
+	"(--help -h)--files[print all files]" \
+	"(--help -h)--conflicts[print tag Conflicts]" \
+	"(--help -h)--obsoletes[print tag Obsoletes]" \
+	"(--help -h)--env[use specified environment ( for bug report )]" \
+	"(--help -h)-i[ignore case distinction in pattern]" \
+	"(--help -h)-f[print version, release, and arch with name]" \
+	"(--help -h)-e[include perl code, like perl -e]" \
+	"(--help -h)-a[binary AND operator]" \
+	"(--help -h)-o[binary OR operator]" \
+     && ret=0
+    ;;
+
+  esac
+
+  return $ret
+}
+
+local update_policy
+
+zstyle -s ":completion:*:*:urpmi:*" cache-policy update_policy
+if [[ -z "$update_policy" ]]; then
+    zstyle ":completion:*:*:urpmi:*" cache-policy _urpmi_cache_policy
+fi
+
+_urpmi "$@"
