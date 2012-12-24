@@ -1,5 +1,5 @@
 sources:
   "zcfg-mdk.tar.bz2": d404fcc13f3f1815c6c58ae121280ee37395ac61
-  "zsh-5.0.0-doc.tar.bz2": ea65b463a0b9475ec084ba4f96f390b84b2630a7
-  "zsh-5.0.0.tar.bz2": 692669243433c55384a54b397a1cc926e582e9f2
   "zshguide.tar.gz": e52b40b8ed1383d8e3740c4affffebbeb8b01a58
+  zsh-5.0.2-doc.tar.bz2: 111228b4675ef65e638ef0c4ffc774ee1057b098
+  zsh-5.0.2.tar.bz2: 9f55ecaaae7cdc1495f91237ba2ec087777a4ad9
