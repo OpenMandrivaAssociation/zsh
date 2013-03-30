@@ -18,7 +18,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion%{?dev:.dev%{dev}}
-Release: %{?pre:0.pre%{pre}.}2
+Release: %{?pre:0.pre%{pre}.}3
 Epoch: 1
 License: BSD-like
 Group: Shells
@@ -29,6 +29,8 @@ Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
 Source5: zsh.rpmlintrc
+
+Patch0:	zsh-5.0.2-texinfo-5.x.patch
 
 # Upstream patches (none at the moment)
 
@@ -73,6 +75,7 @@ This package include doc guid examples and manual for zsh.
 
 %prep
 %setup -q -a 2 -a 1 -n %name-%srcversion
+%apply_patches
 
 mv %name-%{srcversion}/Doc/* Doc/
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi

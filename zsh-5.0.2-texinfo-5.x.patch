@@ -1,0 +1,19 @@
+--- zsh-5.0.2/Doc/zsh.texi.bero	2013-03-30 20:40:54.326441387 +0100
++++ zsh-5.0.2/Doc/zsh.texi	2013-03-30 20:42:46.732036124 +0100
+@@ -430,7 +430,6 @@ to the associated administrative address
+ @item @t{<zsh-announce-unsubscribe@@zsh.org>}
+ @item @t{<zsh-users-unsubscribe@@zsh.org>}
+ @item @t{<zsh-workers-unsubscribe@@zsh.org>}
+-@item
+ @end table
+ 
+ @noindent
+@@ -22645,7 +22644,7 @@ described above.
+ @findex _pick_variant
+ @item @t{_pick_variant} [ @t{-b} @var{builtin-label} ] [ @t{-c}
+ @var{command} ] [ @t{-r} @var{name} ]
+-@itemx    @var{label}@t{=}@var{pattern} ... @var{label} [ @var{args} ... ]
++@item    @var{label}@t{=}@var{pattern} ... @var{label} [ @var{args} ... ]
+ This function is used to resolve situations where a single command name
+ requires more than one type of handling, either because it
+ has more than one variant or because there is a name clash between two
