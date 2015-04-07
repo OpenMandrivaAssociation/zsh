@@ -3,7 +3,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.0.2
+%define zshversion 5.0.7
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -18,7 +18,7 @@
 Summary: A shell with lots of features
 Name:    zsh
 Version: %zshversion%{?dev:.dev%{dev}}
-Release: %{?pre:0.pre%{pre}.}3
+Release: %{?pre:0.pre%{pre}.}1
 Epoch: 1
 License: BSD-like
 Group: Shells
@@ -29,8 +29,6 @@ Source2: zcfg-mdk.tar.bz2
 Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4: zsh.urpmi_comp
 Source5: zsh.rpmlintrc
-
-Patch0:	zsh-5.0.2-texinfo-5.x.patch
 
 # Upstream patches (none at the moment)
 
@@ -164,6 +162,7 @@ mv docroot/Examples/compctl-examples docroot/StartupFiles
 %dir %_datadir/zsh
 %dir %_datadir/zsh/%{srcversion}/
 %_datadir/zsh/%{srcversion}/functions
+%_datadir/zsh/%{srcversion}/help
 %_datadir/zsh/%{srcversion}/scripts
 %_datadir/zsh/%{srcversion}/zshrc_default
 %dir %_libdir/zsh
