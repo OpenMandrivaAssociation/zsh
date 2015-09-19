@@ -3,7 +3,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.0.7
+%define zshversion 5.1.1
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -15,35 +15,35 @@
 
 %define srcversion %{zshversion}%{?pre:-pre-%{pre}}%{?dev:-dev-%{dev}}
 
-Summary: A shell with lots of features
-Name:    zsh
-Version: %zshversion%{?dev:.dev%{dev}}
-Release: %{?pre:0.pre%{pre}.}1
-Epoch: 1
-License: BSD-like
-Group: Shells
-Url: http://www.zsh.org
-Source0: http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}.tar.bz2
-Source1: http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.bz2
-Source2: zcfg-mdk.tar.bz2
-Source3: http://zsh.dotsrc.org/Guide/zshguide.tar.gz
-Source4: zsh.urpmi_comp
-Source5: zsh.rpmlintrc
+Summary:	A shell with lots of features
+Name:		zsh
+Version:	%zshversion%{?dev:.dev%{dev}}
+Release:	%{?pre:0.pre%{pre}.}1
+Epoch:		1
+License:	BSD-like
+Group:		Shells
+Url:		http://www.zsh.org
+Source0:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}.tar.xz
+Source1:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.xz
+Source2:	zcfg-mdk.tar.bz2
+Source3:	http://zsh.dotsrc.org/Guide/zshguide.tar.gz
+Source4:	zsh.urpmi_comp
+Source5:	zsh.rpmlintrc
 
 # Upstream patches (none at the moment)
 
-Requires(postun): rpm-helper
-Requires(post): rpm-helper
-BuildRequires:	pkgconfig(ncurses)
+Requires(postun):	rpm-helper
+Requires(post):		rpm-helper
+BuildRequires:		pkgconfig(ncurses)
 #BuildRequires:	termcap-devel >= 2.0
-BuildRequires:	texinfo
-BuildRequires:	yodl
-BuildRequires:	pcre-devel
-BuildRequires: rpm-helper >= 0.18.5
-BuildRequires: gdbm-devel
-BuildRequires: groff
-Provides:	/bin/zsh
-Provides:	/usr/bin/zsh
+BuildRequires:		texinfo
+BuildRequires:		yodl
+BuildRequires:		pcre-devel
+BuildRequires:		rpm-helper >= 0.18.5
+BuildRequires:		gdbm-devel
+BuildRequires:		groff
+Provides:		/bin/zsh
+Provides:		/usr/bin/zsh
 
 %description
 Zsh is a UNIX command interpreter (shell) usable as an
