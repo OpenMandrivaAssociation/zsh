@@ -1,8 +1,5 @@
-removed_sources:
-  zsh-5.0.7.tar.bz2: 1500191d16af8a71aec4f719a92775a074682096
 sources:
-  zcfg-mdk.tar.bz2: d404fcc13f3f1815c6c58ae121280ee37395ac61
-  zsh-5.0.7-doc.tar.bz2: 299990adcf3d04af9b884b0bb9816ec45cbbe00a
-  zsh-5.1.1-doc.tar.xz: e9fa583a47950424be4e923a8a4d6d38628bb87b
-  zsh-5.1.1.tar.xz: c47a6a6a3624c28290832f29eba40ac6155c6b0d
   zshguide.tar.gz: e52b40b8ed1383d8e3740c4affffebbeb8b01a58
+  zsh-5.2-doc.tar.xz: dce6debba26c6d9bce41c7bf6d980756a412cfca
+  zsh-5.2.tar.xz: a93d034fcaa470bf8557fc11a9d0e86300325936
+  zcfg-omv.tar.bz2: d404fcc13f3f1815c6c58ae121280ee37395ac61

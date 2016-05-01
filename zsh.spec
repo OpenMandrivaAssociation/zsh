@@ -3,7 +3,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.1.1
+%define zshversion 5.2
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -25,7 +25,7 @@ Group:		Shells
 Url:		http://www.zsh.org
 Source0:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}.tar.xz
 Source1:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.xz
-Source2:	zcfg-mdk.tar.bz2
+Source2:	zcfg-omv.tar.bz2
 Source3:	http://zsh.dotsrc.org/Guide/zshguide.tar.gz
 Source4:	zsh.urpmi_comp
 Source5:	zsh.rpmlintrc
@@ -86,7 +86,7 @@ perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zc
 
 # check for tcsetpgrp fails with "configure: error: no controlling tty" when
 # building by bot; force tcsetpgrp
-%configure2_5x \
+%configure \
 	--enable-etcdir=%_sysconfdir \
 	--enable-function-subdirs \
 %ifarch sparc
