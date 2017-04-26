@@ -1,9 +1,10 @@
 %define _disable_ld_no_undefined 1
+%define _disable_lto 1
 
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.2
+%define zshversion 5.3.1
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
