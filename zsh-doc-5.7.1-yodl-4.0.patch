@@ -1,0 +1,16 @@
+diff -up zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo.omv~ zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo
+--- zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo.omv~	2019-02-11 04:48:54.558701771 +0100
++++ zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo	2019-02-11 04:50:17.456909508 +0100
+@@ -48,10 +48,10 @@ def(var)(1)(em(ARG1))\
+ COMMENT(-- XXparcounter is not defined in yodl 2.x --)\
+ IFDEF(XXparcounter)(\
+ )(\
+-    NEWCOUNTER(XXparcounter)\
++    DEFINECOUNTER(XXparcounter)(0)\
+ )\
+ COMMENT(-- without excess newlines in latex style --)\
+-UNDEFINEMACRO(verb)\
++DELETEMACRO(verb)\
+ DEFINEMACRO(verb)(1)(\
+     whenlatex(PUSHCHARTABLE()\
+               latexcommand(\begin{verbatim}) \

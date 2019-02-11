@@ -4,7 +4,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.3.1
+%define zshversion 5.7.1
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -27,9 +27,14 @@ Url:		http://www.zsh.org
 Source0:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}.tar.xz
 Source1:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.xz
 Source2:	zcfg-omv.tar.bz2
-Source3:	http://zsh.dotsrc.org/Guide/zshguide.tar.gz
+Source3:	http://zsh.sourceforge.net/Guide/zshguide.tar.gz
 Source4:	zsh.urpmi_comp
 Source5:	zsh.rpmlintrc
+
+# FIXME this makes it build, but needs more patches to restore
+# some formatting. Is the guide even still useful, given it dates
+# back to the days of yodl 1.0?
+Patch0:		zsh-doc-5.7.1-yodl-4.0.patch
 
 # Upstream patches (none at the moment)
 
@@ -74,6 +79,10 @@ This package include doc guid examples and manual for zsh.
 
 %prep
 %setup -q -a 2 -a 1 -n %name-%srcversion
+rm -rf docroot
+mkdir -p docroot/{Info_html,Examples,Documentation,Zsh_Guide}/
+tar xzf %SOURCE3 -C docroot/Zsh_Guide
+sed -i -e 's,itemize(,itemization(,g;s,enumerate(,enumeration(,g;s,startdit(),description(,g;s,enddit(),),g;s,startit(),itemization(,g;s,endit(),),g;s,starteit(),enumeration(,g;s,endeit(),),g' docroot/Zsh_Guide/zshguide/*.yo
 %apply_patches
 
 mv %name-%{srcversion}/Doc/* Doc/
@@ -95,7 +104,7 @@ perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zc
 %endif
 	--enable-pcre \
 	--with-tcsetpgrp
-make all
+%make_build all
 
 %install
 make install DESTDIR=%buildroot
@@ -125,9 +134,6 @@ pushd %{buildroot}%_mandir && {
 rm -f %{buildroot}%_bindir/zsh-%srcversion
 
 # Copy documentation.
-rm -rf docroot
-mkdir -p docroot/{Info_html,Examples,Documentation}/
-
 cp -a README docroot/
 cp -a Functions/Misc/* Misc/* Util/* docroot/Examples/
 cp -a ChangeLog* docroot/Documentation 
@@ -135,9 +141,8 @@ cp -a StartupFiles docroot/
 cp -a Etc/* docroot/Documentation
 cp -a Doc/*html docroot/Info_html/
 
-mkdir -p docroot/Zsh_Guide
-tar xzf %SOURCE3 -C docroot/Zsh_Guide
-( cd docroot/Zsh_Guide/zshguide/ ; make )  
+# Building Latex docs seems broken for the moment
+( cd docroot/Zsh_Guide/zshguide/ ; make zshguide.html )  
 mv docroot/Zsh_Guide/zshguide/*html docroot/Zsh_Guide/
 rm -Rf docroot/Zsh_Guide/zshguide/
 
