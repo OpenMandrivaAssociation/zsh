@@ -83,7 +83,7 @@ rm -rf docroot
 mkdir -p docroot/{Info_html,Examples,Documentation,Zsh_Guide}/
 tar xzf %SOURCE3 -C docroot/Zsh_Guide
 sed -i -e 's,itemize(,itemization(,g;s,enumerate(,enumeration(,g;s,startdit(),description(,g;s,enddit(),),g;s,startit(),itemization(,g;s,endit(),),g;s,starteit(),enumeration(,g;s,endeit(),),g' docroot/Zsh_Guide/zshguide/*.yo
-%apply_patches
+%autopatch -p1
 
 mv %name-%{srcversion}/Doc/* Doc/
 install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
