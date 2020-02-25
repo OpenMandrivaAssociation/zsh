@@ -4,7 +4,7 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.7.1
+%define zshversion 5.8
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
