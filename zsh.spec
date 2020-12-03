@@ -19,7 +19,7 @@
 Summary:	A shell with lots of features
 Name:		zsh
 Version:	%zshversion%{?dev:.dev%{dev}}
-Release:	%{?pre:0.pre%{pre}.}1
+Release:	%{?pre:0.pre%{pre}.}2
 Epoch:		1
 License:	BSD-like
 Group:		Shells
@@ -37,6 +37,8 @@ Source5:	zsh.rpmlintrc
 Patch0:		zsh-doc-5.7.1-yodl-4.0.patch
 
 # Upstream patches (none at the moment)
+# https://sourceforge.net/p/zsh/code/ci/c6a85163619ed1cee89ab047a0d98108ed46828d/
+Patch1:		zsh-5.8-fix-build-with-ncurses-6.2-devel-openmandriva.patch
 
 Requires(postun):	rpm-helper
 Requires(post):		rpm-helper
