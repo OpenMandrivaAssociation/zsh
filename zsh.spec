@@ -19,7 +19,7 @@
 Summary:	A shell with lots of features
 Name:		zsh
 Version:	%zshversion%{?dev:.dev%{dev}}
-Release:	%{?pre:0.pre%{pre}.}2
+Release:	%{?pre:0.pre%{pre}.}3
 Epoch:		1
 License:	BSD-like
 Group:		Shells
@@ -120,11 +120,6 @@ cp -a zcfg/share/zshrc_default %buildroot%_datadir/zsh/%srcversion/zshrc_default
 # this prevents RPM helper from adding dependency on /usr/bin/zsh
 find %buildroot%_datadir/zsh/%srcversion -type f -exec chmod 0644 '{}' \;
 
-# Backward compatibilie should be removed in the others times.
-pushd %{buildroot}/bin && {
-    mv ..%_bindir/zsh ./zsh
-} && popd
-
 # zshall.1 includes all other man pages which does not work with compressed
 # files. Generate full contents here
 pushd %{buildroot}%_mandir && {
@@ -155,16 +150,16 @@ find docroot/ -type f|xargs perl -pi -e 's@^#!%_prefix/local/bin/(perl|zsh)@#!%_
 mv docroot/Examples/compctl-examples docroot/StartupFiles
 
 %post
-%_post_shelladd /bin/zsh
+%_post_shelladd %{_bindir}/zsh
 
 %preun
-%_preun_shelldel /bin/zsh
+%_preun_shelldel %{_bindir}/zsh
 
 %files
 %defattr(-,root,root,0755)
 %doc docroot/README NEWS
 %config(noreplace) %_sysconfdir/z*
-/bin/%name
+%{_bindir}/%name
 %_mandir/man1/*.1*
 %_infodir/*.info*
 %dir %_datadir/zsh
