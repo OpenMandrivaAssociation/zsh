@@ -18,8 +18,8 @@
 
 Summary:	A shell with lots of features
 Name:		zsh
-Version:	%zshversion%{?dev:.dev%{dev}}
-Release:	%{?pre:0.pre%{pre}.}3
+Version:	5.9
+Release:	1
 Epoch:		1
 License:	BSD-like
 Group:		Shells
