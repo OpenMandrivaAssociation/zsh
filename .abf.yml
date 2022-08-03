@@ -1,5 +1,5 @@
 sources:
   zcfg-omv.tar.bz2: d404fcc13f3f1815c6c58ae121280ee37395ac61
-  zsh-5.8-doc.tar.xz: 4b0a4d0ee603c32d04a54cfdfb44372a0eecb2e9
-  zsh-5.8.tar.xz: 966ea0498fb94140f3caf12af88e98b0e4d02078
   zshguide.tar.gz: 0d42c2e3e7804bf2395eb1c76e9a6ace445539a3
+  zsh-5.9.tar.xz: bf6b252bc0d8618228eb609c5c19d495ed94e7c7
+  zsh-5.9-doc.tar.xz: f5e251d02ec8a5f083f70ad8f75c5f7c1766d9eb

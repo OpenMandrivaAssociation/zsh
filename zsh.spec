@@ -4,7 +4,6 @@
 # The version flow of zsh: N - N-dev-1 - ... - (N+1)-pre-1 ... (N+1)
 #define dev 0
 #define pre 0
-%define zshversion 5.8
 
 %if %{?dev:1}%{!?dev:0} && %{?pre:1}%{!?pre:0}
 %{error:Both %%pre and %%dev defined}
@@ -14,13 +13,12 @@
 %define devdir development/
 %endif
 
-%define srcversion %{zshversion}%{?pre:-pre-%{pre}}%{?dev:-dev-%{dev}}
+%define srcversion %{version}%{?pre:-pre-%{pre}}%{?dev:-dev-%{dev}}
 
 Summary:	A shell with lots of features
 Name:		zsh
 Version:	5.9
-Release:	1
-Epoch:		1
+Release:	2
 License:	BSD-like
 Group:		Shells
 Url:		http://www.zsh.org
@@ -38,7 +36,6 @@ Patch0:		zsh-doc-5.7.1-yodl-4.0.patch
 
 # Upstream patches (none at the moment)
 # https://sourceforge.net/p/zsh/code/ci/c6a85163619ed1cee89ab047a0d98108ed46828d/
-Patch1:		zsh-5.8-fix-build-with-ncurses-6.2-devel-openmandriva.patch
 
 Requires(postun):	rpm-helper
 Requires(post):		rpm-helper
