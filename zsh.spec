@@ -18,7 +18,7 @@
 Summary:	A shell with lots of features
 Name:		zsh
 Version:	5.9
-Release:	2
+Release:	3
 License:	BSD-like
 Group:		Shells
 Url:		http://www.zsh.org
@@ -33,6 +33,7 @@ Source5:	zsh.rpmlintrc
 # some formatting. Is the guide even still useful, given it dates
 # back to the days of yodl 1.0?
 Patch0:		zsh-doc-5.7.1-yodl-4.0.patch
+Patch1:		https://869539.bugs.gentoo.org/attachment.cgi?id=804520&action=diff&format=raw&headers=1#/zsh-clang15.patch
 
 # Upstream patches (none at the moment)
 # https://sourceforge.net/p/zsh/code/ci/c6a85163619ed1cee89ab047a0d98108ed46828d/
