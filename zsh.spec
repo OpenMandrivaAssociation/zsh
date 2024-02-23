@@ -18,7 +18,7 @@
 Summary:	A shell with lots of features
 Name:		zsh
 Version:	5.9
-Release:	4
+Release:	5
 License:	BSD-like
 Group:		Shells
 Url:		http://www.zsh.org
@@ -34,6 +34,8 @@ Source5:	zsh.rpmlintrc
 # back to the days of yodl 1.0?
 Patch0:		zsh-doc-5.7.1-yodl-4.0.patch
 Patch1:		https://869539.bugs.gentoo.org/attachment.cgi?id=804520&action=diff&format=raw&headers=1#/zsh-clang15.patch
+Patch2:		0004-zsh-enable-PCRE-locale-switching.patch
+Patch3:		0005-zsh-port-to-pcre2.patch
 
 # Upstream patches (none at the moment)
 # https://sourceforge.net/p/zsh/code/ci/c6a85163619ed1cee89ab047a0d98108ed46828d/
@@ -44,7 +46,7 @@ BuildRequires:		pkgconfig(ncurses)
 #BuildRequires:	termcap-devel >= 2.0
 BuildRequires:		texinfo
 BuildRequires:		yodl
-BuildRequires:		pcre-devel
+BuildRequires:		pkgconfig(libpcre2-posix)
 BuildRequires:		rpm-helper >= 0.18.5
 BuildRequires:		gdbm-devel
 BuildRequires:		groff
@@ -91,6 +93,8 @@ install -m 0644 %{SOURCE4}  Completion/Mandriva/Command/_urpmi
 # remove temporary files
 find | grep '~$' | xargs rm -f
 perl -pi -e 's|/usr/local/bin/|%_bindir/|' Functions/Misc/{run-help,checkmail,zcalc}
+
+autoreconf -fiv
 
 %build
 
