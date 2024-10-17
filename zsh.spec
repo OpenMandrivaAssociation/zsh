@@ -21,7 +21,7 @@ Version:	5.9
 Release:	5
 License:	BSD-like
 Group:		Shells
-Url:		http://www.zsh.org
+Url:		https://www.zsh.org
 Source0:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}.tar.xz
 Source1:	http://www.zsh.org/pub/%{?devdir}%name-%{srcversion}-doc.tar.xz
 Source2:	zcfg-omv.tar.bz2
