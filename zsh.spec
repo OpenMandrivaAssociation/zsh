@@ -42,6 +42,11 @@ Patch3:		0005-zsh-port-to-pcre2.patch
 
 Requires(postun):	rpm-helper
 Requires(post):		rpm-helper
+BuildRequires:	autoconf
+BuildRequires:	automake
+BuildRequires:	libtool-base
+BuildRequires:	slibtool
+BuildRequires:	make
 BuildRequires:		pkgconfig(ncurses)
 #BuildRequires:	termcap-devel >= 2.0
 BuildRequires:		texinfo
