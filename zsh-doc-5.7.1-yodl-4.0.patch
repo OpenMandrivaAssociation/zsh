@@ -1,6 +1,5 @@
-diff -up zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo.omv~ zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo
---- zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo.omv~	2019-02-11 04:48:54.558701771 +0100
-+++ zsh-5.7.1/docroot/Zsh_Guide/zshguide/zshguide.yo	2019-02-11 04:50:17.456909508 +0100
+--- zsh-5.9.2/docroot/Zsh_Guide/zshguide/zshguide.yo.omv~
++++ zsh-5.9.2/docroot/Zsh_Guide/zshguide/zshguide.yo
 @@ -48,10 +48,10 @@ def(var)(1)(em(ARG1))\
  COMMENT(-- XXparcounter is not defined in yodl 2.x --)\
  IFDEF(XXparcounter)(\

@@ -17,8 +17,8 @@
 
 Summary:	A shell with lots of features
 Name:		zsh
-Version:	5.9
-Release:	5
+Version:	5.9.2
+Release:	1
 License:	BSD-like
 Group:		Shells
 Url:		https://www.zsh.org
