@@ -1,3 +1,1 @@
-# Please keep possibility to backport it
-addFilter("E: info-files-with-install-info-postin")
-addFilter("E: info-files-with-install-info-postun")
+# The info-files-with-install-info filters matched nothing and failed rpmlint.
